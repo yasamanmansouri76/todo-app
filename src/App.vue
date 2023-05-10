@@ -7,7 +7,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <v-app-bar color="primary" density="compact">
       <template v-slot:prepend>
         <RouterLink to="/" class="text-white text-h6 pa-2 mr-4">Home</RouterLink>
-        <RouterLink to="/about" class="text-white pa-2 text-h6">Todo List</RouterLink>
+        <RouterLink to="/todo-list" class="text-white pa-2 text-h6">Todo List</RouterLink>
       </template>
     </v-app-bar>
     <v-main>

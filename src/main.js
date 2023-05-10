@@ -7,12 +7,16 @@ import router from './router'
 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import { VDataTable } from 'vuetify/labs/VDataTable'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 
 const vuetify = createVuetify({
-  components,
+  components: {
+    ...components,
+    VDataTable
+  },
   directives,
   icons: {
     defaultSet: 'mdi'

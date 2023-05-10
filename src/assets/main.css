@@ -33,3 +33,7 @@ a,
     padding: 0 2rem;
   }
 }
+
+.v-data-table-footer {
+  display: none !important;
+}

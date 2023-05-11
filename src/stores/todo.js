@@ -44,6 +44,16 @@ export const useTodoStore = defineStore('todo', {
         this.todoItems = items
         localStorage.setItem('todoItems', JSON.stringify(toRaw(items)))
       }
+    },
+    editTodoItem(item) {
+      const items = JSON.parse(localStorage.getItem('todoItems'))
+      const todo = items.find((elm) => elm.id === item.id)
+      const index = items.indexOf(todo)
+      if (index > -1) {
+        items[index] = item
+        this.todoItems = items
+        localStorage.setItem('todoItems', JSON.stringify(toRaw(items)))
+      }
     }
   }
 })

@@ -1,8 +1,8 @@
 <template>
   <v-card class="pa-3">
-    <v-form v-model="form" @submit.prevent="addTodoItem()">
+    <v-form v-model="form" @submit.prevent="editTodoItem()">
       <v-card-title>
-        <span class="text-h5">{{ todoItem }}</span>
+        <span class="text-h5">Edit {{ todoItem.title }}</span>
       </v-card-title>
       <v-card-text>
         <v-container>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted, toRaw } from 'vue'
 import { useTodoStore } from '@/stores/todo'
 
 export default {
@@ -66,10 +66,9 @@ export default {
 
     const todoStore = useTodoStore()
 
-    function addTodoItem() {
+    function editTodoItem() {
       if (!form.value) return
-      formdata.id = Date.now().toString(36) + Math.random().toString(36).substring(2)
-      todoStore.addTodoItem(formdata)
+      todoStore.editTodoItem(formdata)
       emit('close')
       emit('loadData')
     }
@@ -78,9 +77,23 @@ export default {
       return !!v || 'Field is required'
     }
 
+    function setData() {
+      let item = toRaw(toRaw(todoItem).raw)
+      formdata.title = item.title
+      formdata.priority = item.priority
+      formdata.id = item.id
+      formdata.todoId = item.todoId
+      formdata.description = item.description
+      formdata.dueDate = item.dueDate
+    }
+
+    onMounted(() => {
+      setData()
+    })
+
     return {
       formdata,
-      addTodoItem,
+      editTodoItem,
       form,
       required,
       todoItem

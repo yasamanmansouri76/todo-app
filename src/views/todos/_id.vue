@@ -157,7 +157,7 @@ export default {
     let todoItemFormDialog = ref(false)
     let editTodoItemFormDialog = ref(false)
 
-    let selectedItem = reactive({})
+    let selectedItem = ref({})
 
     const route = useRoute()
     const todoListId = route.params.id
@@ -173,8 +173,8 @@ export default {
     }
 
     function toggleEditTodoItemFormDialog(item) {
-      selectedItem = toRaw(toRaw(item).raw)
-      // editTodoItemFormDialog.value = !editTodoItemFormDialog.value
+      selectedItem.value = item
+      editTodoItemFormDialog.value = !editTodoItemFormDialog.value
     }
 
     function deleteItem(item) {

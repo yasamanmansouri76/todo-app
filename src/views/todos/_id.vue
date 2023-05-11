@@ -43,7 +43,7 @@
           <v-btn fab size="small" class="ma-2" text icon color="primary">
             <v-icon>mdi-pencil-outline</v-icon>
           </v-btn>
-          <v-btn fab size="small" class="ma-2" text icon color="primary">
+          <v-btn fab size="small" class="ma-2" text icon color="primary" @click="deleteItem(item)">
             <v-icon>mdi-trash-can-outline</v-icon>
           </v-btn>
         </v-row>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, toRaw } from 'vue'
 import { useTodoStore } from '@/stores/todo'
 import { useRoute } from 'vue-router'
 import todoItemFormModal from '@/components/todos/todo-item-form-modal.vue'
@@ -151,6 +151,11 @@ export default {
       todoItemFormDialog.value = !todoItemFormDialog.value
     }
 
+    function deleteItem(item) {
+      store.deleteTodoItem(toRaw(toRaw(item).raw))
+      loadData()
+    }
+
     onMounted(() => {
       loadData()
     })
@@ -162,7 +167,8 @@ export default {
       todoItemFormDialog,
       toggleTodoItemFormDialog,
       loadData,
-      todoListId
+      todoListId,
+      deleteItem
     }
   }
 }

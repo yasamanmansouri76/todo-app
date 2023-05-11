@@ -26,6 +26,7 @@ export const useTodoStore = defineStore('todo', {
       return selectedListItems
     },
     addTodoItem(item) {
+      this.todoItems = JSON.parse(localStorage.getItem('todoItems'))
       if (this.todoItems) {
         this.todoItems.push(toRaw(item))
       } else {
@@ -33,6 +34,16 @@ export const useTodoStore = defineStore('todo', {
         this.todoItems.push(toRaw(item))
       }
       localStorage.setItem('todoItems', JSON.stringify(toRaw(this.todoItems)))
+    },
+    deleteTodoItem(item) {
+      const items = JSON.parse(localStorage.getItem('todoItems'))
+      const todo = items.find((elm) => elm.id === item.id)
+      const index = items.indexOf(todo)
+      if (index > -1) {
+        items.splice(index, 1)
+        this.todoItems = items
+        localStorage.setItem('todoItems', JSON.stringify(toRaw(items)))
+      }
     }
   }
 })

@@ -1,43 +1,58 @@
 <template>
-  <div>
-    <v-card class="mx-auto pa-2" max-width="600">
-      <v-list>
-        <v-list-subheader class="text-h5">Todo Lists</v-list-subheader>
-        <v-list-item
-          v-for="(item, i) in todoLists"
-          :key="i"
-          :value="item"
-          active-color="primary"
-          rounded="xl"
-          lines="three"
-        >
-          <v-list-item-title class="align-center d-flex justify-space-between">
-            <span class="text-primary font-weight-medium">{{ item.text }}</span>
-            <span class="text-amber text-caption">12/2/2022</span>
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            Require password for purchase or use password to restrict purchase
-          </v-list-item-subtitle>
-        </v-list-item>
-      </v-list>
+  <div class="home">
+    <v-card class="mx-auto pa-2" max-width="600" width="600">
+      <todos-list :todo-lists="todoLists" @open="toggleTodoFormDialog()" />
     </v-card>
+    <v-dialog v-model="todoFormDialog" persistent width="1024">
+      <todo-form-modal @close="toggleTodoFormDialog()" @load-data="loadData()" />
+    </v-dialog>
   </div>
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useTodoStore } from '@/stores/todo'
+import todoFormModal from '@/components/home/todo-form-modal.vue'
+import todosList from '@/components/home/todos-list.vue'
 
 export default {
   name: 'HomeView',
+  components: {
+    todoFormModal,
+    todosList
+  },
   setup() {
-    const todoLists = reactive([
-      { text: 'Real-Time' },
-      { text: 'Audience' },
-      { text: 'Conversions' }
-    ])
+    let todoFormDialog = ref(false)
+    let todoLists = ref([])
+
+    const store = useTodoStore()
+
+    function toggleTodoFormDialog() {
+      todoFormDialog.value = !todoFormDialog.value
+    }
+
+    function loadData() {
+      todoLists.value = store.fetchTodoLists()
+    }
+
+    onMounted(() => {
+      loadData()
+    })
+
     return {
-      todoLists
+      todoLists,
+      todoFormDialog,
+      toggleTodoFormDialog,
+      loadData
     }
   }
 }
 </script>
+
+<style lang="scss">
+.home {
+  .v-list-subheader__text {
+    width: 100%;
+  }
+}
+</style>

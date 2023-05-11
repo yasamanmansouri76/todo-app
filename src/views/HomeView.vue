@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <v-card class="mx-auto pa-2" max-width="600" width="600">
+    <v-card class="mx-auto pa-2" max-width="700px">
       <todos-list :todo-lists="todoLists" @open="toggleTodoFormDialog()" />
     </v-card>
     <v-dialog v-model="todoFormDialog" persistent width="1024">

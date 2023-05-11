@@ -2,7 +2,7 @@
   <v-list>
     <v-list-subheader class="text-h5 mb-3">
       <div class="align-center d-flex justify-space-between">
-        <span>Todo Lists</span>
+        <span class="mr-3">Todo Lists</span>
         <v-btn color="primary" size="small" rounded @click="$emit('open')">Create new</v-btn>
       </div>
     </v-list-subheader>

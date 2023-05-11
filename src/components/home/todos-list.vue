@@ -18,13 +18,17 @@
       rounded="xl"
       lines="three"
     >
-      <v-list-item-title class="align-center d-flex justify-space-between">
-        <span class="text-primary font-weight-medium">{{ item.title }}</span>
-        <span class="text-amber text-caption">{{ item.createdAt }}</span>
-      </v-list-item-title>
-      <v-list-item-subtitle>
-        {{ item.description }}
-      </v-list-item-subtitle>
+      <div>
+        <RouterLink :to="{ name: 'todosList', params: { id: item.id } }">
+          <v-list-item-title class="align-center d-flex justify-space-between">
+            <span class="text-primary font-weight-medium">{{ item.title }}</span>
+            <span class="text-amber text-caption">{{ item.createdAt }}</span>
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            {{ item.description }}
+          </v-list-item-subtitle>
+        </RouterLink>
+      </div>
     </v-list-item>
   </v-list>
 </template>

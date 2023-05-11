@@ -28,9 +28,12 @@
       class="mb-4"
       @click:append-inner="onClick"
     ></v-text-field>
+    <v-btn color="primary" size="small" class="mb-3" rounded @click="toggleTodoItemFormDialog()"
+      >Create new</v-btn
+    >
     <v-data-table
       :headers="headers.selectedHeaders"
-      :items="todos"
+      :items="todoItems"
       item-value="name"
       class="elevation-1"
       :items-per-page="-1"
@@ -46,24 +49,29 @@
         </v-row>
       </template>
     </v-data-table>
+    <v-dialog v-model="todoItemFormDialog" persistent width="1024">
+      <todo-item-form-modal
+        :todo-list-id="todoListId"
+        @close="toggleTodoItemFormDialog()"
+        @load-data="loadData()"
+      />
+    </v-dialog>
   </v-card>
 </template>
 
 <script>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
+import { useTodoStore } from '@/stores/todo'
+import { useRoute } from 'vue-router'
+import todoItemFormModal from '@/components/todos/todo-item-form-modal.vue'
 
 export default {
   name: 'TodoList',
+  components: {
+    todoItemFormModal
+  },
   setup() {
-    const todos = [
-      {
-        title: 'Frozen Yogurt',
-        description: 'test desc',
-        dueDate: '22/3/2022',
-        priority: 'high'
-      }
-    ]
-
+    const todoItems = ref([])
     let headers = reactive({
       allHeaders: [
         {
@@ -128,11 +136,33 @@ export default {
     })
 
     let loading = ref(false)
+    let todoItemFormDialog = ref(false)
+
+    const route = useRoute()
+    const todoListId = route.params.id
+
+    const store = useTodoStore()
+
+    function loadData() {
+      todoItems.value = store.getTodoListItems(todoListId)
+    }
+
+    function toggleTodoItemFormDialog() {
+      todoItemFormDialog.value = !todoItemFormDialog.value
+    }
+
+    onMounted(() => {
+      loadData()
+    })
 
     return {
-      todos,
+      todoItems,
       headers,
-      loading
+      loading,
+      todoItemFormDialog,
+      toggleTodoItemFormDialog,
+      loadData,
+      todoListId
     }
   }
 }
